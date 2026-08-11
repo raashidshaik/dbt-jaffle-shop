@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: One row per customer, cleaned from the raw jaffle_shop source.
+    columns:
+      - name: customer_id
+        description: Primary key.
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_orders
+    description: One row per order, cleaned from the raw jaffle_shop source.
+    columns:
+      - name: order_id
+        description: Primary key.
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: Foreign key to stg_customers.
+        tests:
+          - relationships:
+              arguments:
+                to: ref('stg_customers')
+                field: customer_id
+      - name: status
+        description: Order lifecycle status.
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
