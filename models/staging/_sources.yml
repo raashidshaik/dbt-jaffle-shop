@@ -7,4 +7,6 @@ sources:
     description: Raw order and customer data loaded into Snowflake.
     tables:
       - name: customers
+        description: One row per registered customer.
       - name: orders
+        description: One row per order placed.

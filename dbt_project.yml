@@ -1,4 +1,3 @@
-
 # Name your project! Project names should contain only lowercase characters
 # and underscores. A good package name should reflect your organization's
 # name or the intended use of these models
@@ -10,8 +9,6 @@ config-version: 2
 profile: 'default'
 
 # These configurations specify where dbt should look for different types of files.
-# The `model-paths` config, for example, states that models in this project can be
-# found in the "models/" directory. You probably won't need to change these!
 model-paths: ["models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
@@ -24,14 +21,12 @@ clean-targets:         # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
 
-
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 
-# In dbt, the default materialization for a model is a view. Staging models stay as
-# views since they're cheap to build and always reflect the latest source data. Marts
-# are materialized as tables since they're queried often and worth persisting.
-
+# Staging models are cheap to rebuild and always reflect the source, so they are
+# materialized as views. Marts are queried repeatedly by downstream consumers, so
+# they are persisted as tables.
 models:
   jaffle_shop:
     staging:

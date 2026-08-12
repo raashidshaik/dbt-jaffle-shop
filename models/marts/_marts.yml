@@ -2,11 +2,13 @@ version: 2
 
 models:
   - name: dim_customers
-    description: One row per customer with order history aggregated.
+    description: One row per customer, with order history aggregated from stg_orders.
     columns:
       - name: customer_id
-        description: Primary key.
-        tests: [unique, not_null]
+        description: Primary key, sourced from stg_customers.
+        tests:
+          - unique
+          - not_null
       - name: number_of_orders
         description: Count of orders placed by this customer.
         tests:
