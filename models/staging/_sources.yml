@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: jaffle_shop
+    database: raw
+    schema: jaffle_shop
+    description: Raw order and customer data loaded into Snowflake.
+    tables:
+      - name: customers
+      - name: orders
