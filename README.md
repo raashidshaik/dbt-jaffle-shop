@@ -13,8 +13,19 @@ Models are organized in three layers: `sources` (declared in `models/staging/_so
 - **`unique` + `not_null` on `stg_customers.customer_id` and `stg_orders.order_id`** — the minimum bar for trusting a primary key; without these, joins and aggregations downstream can silently duplicate or drop rows.
 - **`relationships` on `stg_orders.customer_id` → `stg_customers.customer_id`** — referential integrity enforced in the pipeline. It catches orphaned orders that point at a customer who doesn't exist, the same instinct as a foreign key constraint at the database layer, just enforced at the transformation layer instead.
 - **`accepted_values` on `stg_orders.status`** — catches upstream systems introducing a new status code without telling anyone, before it silently breaks downstream reporting.
+- **`not_null` on `dim_customers.number_of_orders`** — a customer with no orders arrives as `NULL` from the left join, not `0`. Rather than drop the test, the model coalesces the count to `0`, so the column means what a consumer would assume it means.
 
 All of the tests above pass.
+
+## Running this project
+
+Developed in dbt Cloud against Snowflake. To run it yourself:
+
+1. `pip install dbt-snowflake`
+2. Add a profile named `default` to `~/.dbt/profiles.yml` pointing at your Snowflake account — `dbt_project.yml` references `profile: 'default'`.
+3. Load the raw `customers` and `orders` tables into a `raw.jaffle_shop` schema; that is where `models/staging/_sources.yml` expects to find them.
+4. `dbt build` — runs the models and their tests together, in dependency order.
+5. `dbt docs generate` then `dbt docs serve` to browse the documentation and the lineage graph below.
 
 ## Lineage
 
