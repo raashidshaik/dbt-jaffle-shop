@@ -22,10 +22,12 @@ models:
         description: Foreign key to stg_customers.
         tests:
           - relationships:
-              to: ref('stg_customers')
-              field: customer_id
+              arguments:
+                to: ref('stg_customers')
+                field: customer_id
       - name: status
         description: Order lifecycle status.
         tests:
           - accepted_values:
-              values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
+              arguments:
+                values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
